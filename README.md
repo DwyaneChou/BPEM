@@ -27,19 +27,31 @@ geo_em.d01.nc is the WPS geogrid output.
 
 Once you've generated the FG and LBC, for letting the model to run as the way you want, you should edit the namelist.input,
 system_type         : choose from 'Windows' or 'Linux'
+
 max_openmp_threads  : the maximum openmp threads number you want to use, it depends on how many threads do your computer has.
-run_hours           : how many hours do you want to run the model, if you're using the test data I provided, 720 is the max value.
+
+run_hours           : how many hours do you want to run the model, if you're using the test data I provided, 
+                      720 is the max value.
+
 history_interval    : how ofter do you want to output the forecasting data, unit is minute.history_interval*60 should be a 
                       integer multiple to time_step, or the model won't output correctly.
+                      
 input_data_path     : where the input files are, for the test case ./BPEM/initialize
+
 output_data_path    : where do you want to store the output data, for the test case ./BPEM/output
+
 time_step           : the integration time step, if the time step is too large, the model might blow up. for 100km resolution,
                       200s is a good choice.
-integration_option  : Choose from 1 for loop integration, or 2 for matrix integration, but for now matrix scheme is not avaliable.
+                      
+integration_option  : Choose from 1 for loop integration, or 2 for matrix integration,
+                      but for now matrix scheme is not avaliable.
+                      
 z0                  : not used, please set to 0
+
 smooth_coefficient  : not used
-spec_exp            : exponential multiplier for the relaxation zone ramp, used with a specified boundary condition. 0. = linear ramp,
-                      default; 0.33 = ~3*dx exp decay factor. This may be useful for long simulations.
+
+spec_exp            : exponential multiplier for the relaxation zone ramp, used with a specified boundary condition.
+                      0. = linear ramp, default; 0.33 = ~3*dx exp decay factor. This may be useful for long simulations.
 
 #Postprocess
 
