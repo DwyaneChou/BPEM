@@ -8,6 +8,7 @@ make
 If the compile finish sucessful, the executable BPEM.exe will be shown in the root directory of BPEM
 
 #Input source data and initialization
+
 This model needs a ERA-interim netCDF file to provide the first guess field(FG), and the lateral boundary condition(LBC).
 You may download ERA-interim data from "http://apps.ecmwf.int/datasets/data/interim-full-daily/levtype=pl/"
 Required fields are "Geopotential","U component of wind" and "V component of wind" at 500hPa(for original 
@@ -23,6 +24,7 @@ geo_em.d01.nc is the WPS geogrid output.
 201710_ZUV.nc is the ERA-interim file.
 
 #Namelist
+
 Once you've generated the FG and LBC, for letting the model to run as the way you want, you should edit the namelist.input,
 system_type         : choose from 'Windows' or 'Linux'
 max_openmp_threads  : the maximum openmp threads number you want to use, it depends on how many threads do your computer has.
@@ -40,6 +42,7 @@ spec_exp            : exponential multiplier for the relaxation zone ramp, used 
                       default; 0.33 = ~3*dx exp decay factor. This may be useful for long simulations.
 
 #Postprocess
+
 BPEM will output a netCDF file, you may plot the data by some useful software, such as "ncview","Panoply","NCL","Matlab", here I've
 wrote a simply Matlab script in ./BPEM/postprocess/post_process.m.
 
