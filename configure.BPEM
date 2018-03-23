@@ -1,0 +1,15 @@
+# Lib Path
+NETCDFINC = -I$(NETCDF)/include
+INCLUDE   = -I. $(NETCDFINC)
+
+# GFORTRAN COMPLIER
+F90     = gfortran
+FCFLAGS = -ffixed-line-length-none -fopenmp -ffree-line-length-none #-fdefault-real-8
+CFLAGS  =
+OPT     = -O3
+AR      = ar
+ARFLAGS = ru
+MAKE    = make
+RM      = rm -f
+
+EXENAME = BPEM.exe

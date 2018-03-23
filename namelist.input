@@ -1,0 +1,25 @@
+&system_setting
+system_type			    = 'Linux' !Choose from 'Windows' or 'Linux'
+max_openmp_threads	= 8
+/
+
+&time_control
+run_hours			      = 720.d0,
+history_interval    = 360.d0, !history_interval*60 should be a integer multiple to time_step, or the model won't output correctly.
+/
+
+&files
+input_data_path		  = '/mnt/e/study/BPEM/BPEM_release/initialize'
+output_data_path	  = '/mnt/e/study/BPEM/BPEM_release/output'
+/
+
+&domains
+time_step			      = 200, !seconds
+/
+
+&dynamics
+integration_option  = 1, ! Choose from 1 for loop integration, or 2 for matrix integration
+z0                  = 0, ! A bad way to reduce external gravity wave
+smooth_coefficient  = 0.5
+spec_exp            = 0.333333333333333
+/
