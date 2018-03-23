@@ -13,6 +13,8 @@ The dynamic core description:
 
 5. Davies LBC scheme(the same as WRF)
 
+The details about running and installing might be found in Users'Guide.pdf
+
 Any advice or question, send Email to: dwyanechou@qq.com
 
 Zhou Lilong
