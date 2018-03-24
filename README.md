@@ -7,7 +7,7 @@ The dynamic core description:
 
 2. The complete coriolis and curvature terms.
 
-3. Runger-Kutta 3rd order (the same as RK3 in WRF)
+3. 3rd order Runger-Kutta (the same as RK3 in WRF)
 
 4. 8th order diffusion term to smooth the short wave.
 
