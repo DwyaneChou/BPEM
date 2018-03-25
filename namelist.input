@@ -9,8 +9,8 @@ history_interval    = 360.d0, !history_interval*60 should be a integer multiple 
 /
 
 &files
-input_data_path		  = '~/BPEM/initialize'
-output_data_path	  = '~/BPEM/output'
+input_data_path		  = '/mnt/e/study/BPEM/initialize'
+output_data_path	  = '/mnt/e/study/BPEM/output'
 /
 
 &domains
@@ -18,7 +18,7 @@ time_step			      = 200, !seconds
 /
 
 &dynamics
-integration_option  = 1, ! Choose from 1 for loop integration, or 2 for matrix integration
+integration_option  = 2, ! Choose from 1 for Square-Conservation format equation, or 2 for Energe-Conservation format equation
 z0                  = 0, ! A bad way to reduce external gravity wave
 smooth_coefficient  = 0.5
 spec_exp            = 0.333333333333333
