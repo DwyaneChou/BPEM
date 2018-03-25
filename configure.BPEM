@@ -4,7 +4,7 @@ INCLUDE   = -I. $(NETCDFINC)
 
 # GFORTRAN COMPLIER
 F90     = gfortran
-FCFLAGS = -ffixed-line-length-none -fopenmp -ffree-line-length-none #-fdefault-real-8
+FCFLAGS = -ffixed-line-length-none -fopenmp -ffree-line-length-none -fdefault-real-8
 CFLAGS  =
 OPT     = -O3
 AR      = ar
