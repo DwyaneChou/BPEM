@@ -9,7 +9,7 @@ The dynamic core description:
 
 3. Time integration scheme: 3rd order Runger-Kutta (the same as RK3 in WRF) or original 4th order Runger-Kutta
 
-4. Diffusion terms to smooth the short wave, it might be choosen from 2,4,6,8.
+4. Diffusion terms to smooth the short wave, it might be choosen from 0,2,4,6,8.
 
 5. Davies LBC scheme(the same as WRF)
 
