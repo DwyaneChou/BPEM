@@ -2,39 +2,6 @@ module subroutines
     use control
     use constant
     contains
-    !space smoothing for internal points 区域内5点平滑(正逆平滑)
-    !l=1为只执行正平滑，l=2为执行正逆平滑
-    subroutine smooth_5_points(a,smooth_coefficient,x_grd_num,y_grd_num,l)
-    implicit none
-    integer ,intent(in)     ::  x_grd_num,y_grd_num
-    real    ,intent(in)     ::  smooth_coefficient
-    real    ,intent(inout)  ::  a(x_grd_num,y_grd_num)
-    real                        w(x_grd_num,y_grd_num)
-    integer                     l,xs,xe,ys,ye
-    integer                     i,j
-
-    xs=2
-    ys=2
-    xe=x_grd_num-1
-    ye=y_grd_num-1
-
-    do i=xs,xe
-        do j=xs,ye
-            w(i,j)=a(i,j)+smooth_coefficient*0.25*(a(i-1,j)+a(i+1,j)+a(i,j-1)+a(i,j+1)-4.*a(i,j))
-        enddo
-    enddo
-    a(xs:xe,ys:ye)=w(xs:xe,ys:ye)
-
-    if(l==2) then
-        do i=xs,xe
-            do j=ys,ye
-                w(i,j)=a(i,j)-smooth_coefficient*0.25*(a(i-1,j)+a(i+1,j)+a(i,j-1)+a(i,j+1)-4.*a(i,j))
-            enddo
-        enddo
-        a(xs:xe,ys:ye)=w(xs:xe,ys:ye)
-    end if
-    end subroutine smooth_5_points
-
     !transmiting arrays  数组传送
     subroutine transmit_arrays(ua,va,za,ub,vb,zb)
     real    ,intent(in) ::  ub(grid%x_grd_num_u ,grid%y_grd_num_u),&
@@ -383,15 +350,27 @@ module subroutines
             diffusion_term(i,j)=0.0078125*(var(i+3,j)+var(i-3,j)+var(i,j+3)+var(i,j-3)-6*(var(i+2,j)+var(i-2,j)+var(i,j+2)+var(i,j-2))+15*(var(i+1,j)+var(i-1,j)+var(i,j+1)+var(i,j-1))-40*var(i,j))
         endforall
         
+        !2th order diffusion full field
+        if(diff_order==2)then
+            forall(i=5:x_grd_num-4,j=5:y_grd_num-4)
+                diffusion_term(i,j)=0.125*(var(i+1,j)+var(i-1,j)+var(i,j+1)+var(i,j-1)-4*var(i,j))
+            endforall
+        !4th order diffusion full field
+        elseif(diff_order==4)then
+            forall(i=5:x_grd_num-4,j=5:y_grd_num-4)
+                diffusion_term(i,j)=-0.03125*(var(i+2,j)+var(i-2,j)+var(i,j+2)+var(i,j-2)-4*(var(i+1,j)+var(i-1,j)+var(i,j+1)+var(i,j-1))+12*var(i,j))
+            endforall
         !6th order diffusion full field
-        !forall(i=4:x_grd_num-3,j=4:y_grd_num-3)
-        !    diffusion_term(i,j)=-0.0078125*(var(i+3,j)+var(i-3,j)+var(i,j+3)+var(i,j-3)-6*(var(i+2,j)+var(i-2,j)+var(i,j+2)+var(i,j-2))+15*(var(i+1,j)+var(i-1,j)+var(i,j+1)+var(i,j-1))-40*var(i,j))
-        !endforall
-        
-        !8th order diffusion full field
-        forall(i=5:x_grd_num-4,j=5:y_grd_num-4)
-            diffusion_term(i,j)=-0.001953125*(var(i+4,j)+var(i-4,j)+var(i,j+4)+var(i,j-4)-8*(var(i+3,j)+var(i-3,j)+var(i,j+3)+var(i,j-3))+28*(var(i+2,j)+var(i-2,j)+var(i,j+2)+var(i,j-2))-56*(var(i+1,j)+var(i-1,j)+var(i,j+1)+var(i,j-1))+140*var(i,j))
-        endforall
+        elseif(diff_order==6)then
+            forall(i=5:x_grd_num-4,j=5:y_grd_num-4)
+                diffusion_term(i,j)=0.0078125*(var(i+3,j)+var(i-3,j)+var(i,j+3)+var(i,j-3)-6*(var(i+2,j)+var(i-2,j)+var(i,j+2)+var(i,j-2))+15*(var(i+1,j)+var(i-1,j)+var(i,j+1)+var(i,j-1))-40*var(i,j))
+            endforall
+        elseif(diff_order==8)then
+            !8th order diffusion full field
+            forall(i=5:x_grd_num-4,j=5:y_grd_num-4)
+                diffusion_term(i,j)=-0.001953125*(var(i+4,j)+var(i-4,j)+var(i,j+4)+var(i,j-4)-8*(var(i+3,j)+var(i-3,j)+var(i,j+3)+var(i,j-3))+28*(var(i+2,j)+var(i-2,j)+var(i,j+2)+var(i,j-2))-56*(var(i+1,j)+var(i-1,j)+var(i,j+1)+var(i,j-1))+140*var(i,j))
+            endforall
+        endif
         
         var=var+diffusion_term
         

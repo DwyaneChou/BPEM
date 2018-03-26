@@ -14,12 +14,12 @@ output_data_path	  = '/mnt/e/study/BPEM/output'
 /
 
 &domains
-time_step			      = 200, !seconds
+time_step			      = 400, !seconds
 /
 
 &dynamics
-integration_option  = 2, ! Choose from 1 for Square-Conservation format equation, or 2 for Energe-Conservation format equation
-z0                  = 0, ! A bad way to reduce external gravity wave
-smooth_coefficient  = 0.5
-spec_exp            = 0.333333333333333
+integration_option     = 2, ! Choose from 1 for Square-Conservation format equation, or 2 for Energe-Conservation format equation
+time_integration_order = 4,
+diff_order             = 8,
+spec_exp               = 0.333333333333333
 /

@@ -11,7 +11,7 @@
     type runge_kutta
         real,allocatable:: u(:,:),v(:,:),z(:,:)
     endtype
-    type(runge_kutta)::rk1,rk2,rk3
+    type(runge_kutta)::rk1,rk2,rk3,rk4
     real ua_temp(grid%x_grd_num_u,grid%y_grd_num_u),va_temp(grid%x_grd_num_v,grid%y_grd_num_v),za_temp(grid%x_grd_num,grid%y_grd_num),&
          ub_temp(grid%x_grd_num_u,grid%y_grd_num_u),vb_temp(grid%x_grd_num_v,grid%y_grd_num_v),zb_temp(grid%x_grd_num,grid%y_grd_num),&
          uc_temp(grid%x_grd_num_u,grid%y_grd_num_u),vc_temp(grid%x_grd_num_v,grid%y_grd_num_v),zc_temp(grid%x_grd_num,grid%y_grd_num)
@@ -22,7 +22,8 @@
 
     allocate(rk1%u(grid%x_grd_num_u,grid%y_grd_num_u),rk1%v(grid%x_grd_num_v,grid%y_grd_num_v),rk1%z(grid%x_grd_num,grid%y_grd_num),&
              rk2%u(grid%x_grd_num_u,grid%y_grd_num_u),rk2%v(grid%x_grd_num_v,grid%y_grd_num_v),rk2%z(grid%x_grd_num,grid%y_grd_num),&
-             rk3%u(grid%x_grd_num_u,grid%y_grd_num_u),rk3%v(grid%x_grd_num_v,grid%y_grd_num_v),rk3%z(grid%x_grd_num,grid%y_grd_num))
+             rk3%u(grid%x_grd_num_u,grid%y_grd_num_u),rk3%v(grid%x_grd_num_v,grid%y_grd_num_v),rk3%z(grid%x_grd_num,grid%y_grd_num),&
+             rk4%u(grid%x_grd_num_u,grid%y_grd_num_u),rk4%v(grid%x_grd_num_v,grid%y_grd_num_v),rk4%z(grid%x_grd_num,grid%y_grd_num))
 
     !Calculate Lateral Boundary Condition Weight Function Coefficient
     call LBC_WFC(grid%F1,grid%F2,grid%bdy_width,grid%Spec_Zone,grid%Relax_Zone,grid%dx)
@@ -40,8 +41,38 @@
         call diffusion(grid%vb,grid%x_grd_num_v ,grid%y_grd_num_v)
         call diffusion(grid%zb,grid%x_grd_num   ,grid%y_grd_num)
         
-        call RK3_WRF(grid%ub,grid%vb,grid%zb,grid%uc,grid%vc,grid%zc,time_step)
+        if(time_integration_order==3)then
+            call RK3_WRF(grid%ub,grid%vb,grid%zb,grid%uc,grid%vc,grid%zc,time_step)
+        elseif(time_integration_order==4)then
+            !Calculate K1
+            ub_temp=grid%ub
+            vb_temp=grid%vb
+            zb_temp=grid%zb
+            call time_integration(ub_temp,vb_temp,zb_temp,ub_temp,vb_temp,zb_temp,rk1%u,rk1%v,rk1%z,time_step,2)
 
+            !Calculate K2
+            ub_temp=grid%ub+0.5d0*rk1%u
+            vb_temp=grid%vb+0.5d0*rk1%v
+            zb_temp=grid%zb+0.5d0*rk1%z
+            call time_integration(ub_temp,vb_temp,zb_temp,ub_temp,vb_temp,zb_temp,rk2%u,rk2%v,rk2%z,time_step,2)
+            
+            !Calculate K3
+            ub_temp=grid%ub+0.5d0*rk2%u
+            vb_temp=grid%vb+0.5d0*rk2%v
+            zb_temp=grid%zb+0.5d0*rk2%z
+            call time_integration(ub_temp,vb_temp,zb_temp,ub_temp,vb_temp,zb_temp,rk3%u,rk3%v,rk3%z,time_step,2)
+            
+            !Calculate K4
+            ub_temp=grid%ub+rk3%u
+            vb_temp=grid%vb+rk3%v
+            zb_temp=grid%zb+rk3%z
+            call time_integration(ub_temp,vb_temp,zb_temp,ub_temp,vb_temp,zb_temp,rk4%u,rk4%v,rk4%z,time_step,2)
+            
+            grid%uc=grid%ub+(rk1%u+2.d0*rk2%u+2.d0*rk3%u+rk4%u)/6.d0
+            grid%vc=grid%vb+(rk1%v+2.d0*rk2%v+2.d0*rk3%v+rk4%v)/6.d0
+            grid%zc=grid%zb+(rk1%z+2.d0*rk2%z+2.d0*rk3%z+rk4%z)/6.d0
+        endif
+        
         call ULBC_WRF(grid%uc,grid%vc,grid%zc,grid%integerated_step_num,time_step)
         
         !Output data

@@ -30,11 +30,11 @@ module control
                 e_sn
 
     !&dynamic
-    integer ::  integration_option = 1
-    real    ::  z0                 = 2500.0            ,&
-                smooth_coefficient = 0.5               ,&
-                spec_exp           = 0.3333333333333333
-    namelist /dynamics/ integration_option,z0,smooth_coefficient,spec_exp
+    integer :: integration_option     = 1
+    integer :: time_integration_order = 3
+    integer :: diff_order             = 8
+    real    :: spec_exp               = 0.3333333333333333
+    namelist /dynamics/ integration_option,time_integration_order,diff_order,spec_exp
 
     real time_step
 

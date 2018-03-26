@@ -135,7 +135,7 @@ module integration
                                        +u(i,j)*(zm(i,j)-zm(i-1,j))        &
                                        +v(i,j+1)*(zm(i,j+1)-zm(i,j))      &
                                        +v(i,j)*(zm(i,j)-zm(i,j-1))        &
-                                       +2.d0*(zm(i,j)-z0)                 &
+                                       +2.d0*zm(i,j)                      &
                                        *(u(i+1,j)-u(i,j)+v(i,j+1)-v(i,j)))
         enddo
     enddo
