@@ -7,9 +7,9 @@ The dynamic core description:
 
 2. The complete coriolis and curvature terms.
 
-3. 3rd order Runger-Kutta (the same as RK3 in WRF)
+3. Time integration scheme:3rd order Runger-Kutta (the same as RK3 in WRF) or original 4th order Runger-Kutta
 
-4. 8th order diffusion term to smooth the short wave.
+4. Diffusion terms to smooth the short wave, it might be choose from 2,4,6,8.
 
 5. Davies LBC scheme(the same as WRF)
 
