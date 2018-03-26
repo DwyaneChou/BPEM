@@ -350,23 +350,30 @@ module subroutines
             diffusion_term(i,j)=0.0078125*(var(i+3,j)+var(i-3,j)+var(i,j+3)+var(i,j-3)-6*(var(i+2,j)+var(i-2,j)+var(i,j+2)+var(i,j-2))+15*(var(i+1,j)+var(i-1,j)+var(i,j+1)+var(i,j-1))-40*var(i,j))
         endforall
         
+        !Diffusion cases
+        if(diff_order==0)then
+            !No diffusion
+            
         !2th order diffusion full field
-        if(diff_order==2)then
+        elseif(diff_order==2)then
             forall(i=5:x_grd_num-4,j=5:y_grd_num-4)
                 diffusion_term(i,j)=0.125*(var(i+1,j)+var(i-1,j)+var(i,j+1)+var(i,j-1)-4*var(i,j))
             endforall
+            
         !4th order diffusion full field
         elseif(diff_order==4)then
             forall(i=5:x_grd_num-4,j=5:y_grd_num-4)
                 diffusion_term(i,j)=-0.03125*(var(i+2,j)+var(i-2,j)+var(i,j+2)+var(i,j-2)-4*(var(i+1,j)+var(i-1,j)+var(i,j+1)+var(i,j-1))+12*var(i,j))
             endforall
+            
         !6th order diffusion full field
         elseif(diff_order==6)then
             forall(i=5:x_grd_num-4,j=5:y_grd_num-4)
                 diffusion_term(i,j)=0.0078125*(var(i+3,j)+var(i-3,j)+var(i,j+3)+var(i,j-3)-6*(var(i+2,j)+var(i-2,j)+var(i,j+2)+var(i,j-2))+15*(var(i+1,j)+var(i-1,j)+var(i,j+1)+var(i,j-1))-40*var(i,j))
             endforall
+        
+        !8th order diffusion full field
         elseif(diff_order==8)then
-            !8th order diffusion full field
             forall(i=5:x_grd_num-4,j=5:y_grd_num-4)
                 diffusion_term(i,j)=-0.001953125*(var(i+4,j)+var(i-4,j)+var(i,j+4)+var(i,j-4)-8*(var(i+3,j)+var(i-3,j)+var(i,j+3)+var(i,j-3))+28*(var(i+2,j)+var(i-2,j)+var(i,j+2)+var(i,j-2))-56*(var(i+1,j)+var(i-1,j)+var(i,j+1)+var(i,j-1))+140*var(i,j))
             endforall
