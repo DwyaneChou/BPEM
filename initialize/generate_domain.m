@@ -33,8 +33,8 @@ grid.XLONG_V   = lon_v;
 grid.XLAT_V    = lat_v;
 
 grid.MAP_PROJ  = 1;
-grid.CEN_LON   = ref_lat;
-grid.CEN_LAT   = ref_lon;
+grid.CEN_LON   = ref_lon;
+grid.CEN_LAT   = ref_lat;
 grid.DX        = dx;
 grid.DY        = dx;
 grid.E_WE      = e_we;
