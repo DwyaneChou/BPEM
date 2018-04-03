@@ -3,7 +3,7 @@ A Barotropic Primitive Equation Model
 This model was written for studying the atmosphere model, it might be a tool for researching the barotropic atmosphere.
 The dynamic core description:
 
-1. Barotropic primitive Equation in energy conservation format or square conservation format.
+1. Barotropic primitive equation in energy conservation format or square conservation format.
 
 2. The complete coriolis and curvature terms.
 
