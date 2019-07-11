@@ -9,8 +9,8 @@ history_interval    = 360.d0, !history_interval*60 should be a integer multiple 
 /
 
 &files
-input_data_path		  = '/mnt/e/study/BPEM/initialize'
-output_data_path	  = '/mnt/e/study/BPEM/output'
+input_data_path		  = './initialize'
+output_data_path	  = './output'
 /
 
 &domains
